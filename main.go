@@ -1,30 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"hello-world-http/m/v2/db"
+	"hello-world-http/m/v2/handlers"
+	"log"
+
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-func handle_hello(c *gin.Context) {
-	// handles /hello/:name path
-	c.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("hello %s", c.Param("name")),
-	})
-
-}
-
-func handle_hostname(c *gin.Context) {
-	// handles /netinfo path
-	host, _ := os.Hostname()
-	c.JSON(http.StatusOK, gin.H{
-		"message": host,
-	})
-}
+var (
+	ListenAddr = ":8080"
+	DbAddr     = "localhost:6379"
+)
 
 func main() {
+
+	var err error
+
+	db.DbClient, err = db.NewDatabase(DbAddr)
+	if err != nil {
+		log.Printf("WARN: Failed to connect to redis: %s", err.Error())
+	}
+
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
@@ -34,8 +33,8 @@ func main() {
 		})
 	})
 
-	router.GET("/hello/:name", handle_hello)
-	router.GET("/hostname", handle_hostname)
+	router.GET("/hello/:name", handlers.Hello)
+	router.GET("/hostname", handlers.Hostname)
 
-	router.Run(":8080")
+	router.Run(ListenAddr)
 }
