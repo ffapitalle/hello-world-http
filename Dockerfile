@@ -1,8 +1,13 @@
-FROM golang:1.20-alpine
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.20-alpine
+
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /app
 COPY . /app
-RUN go mod tidy && go build -o app main.go
+RUN go mod tidy && GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o app main.go
 
 EXPOSE 8080
 ENTRYPOINT ["./app"]
