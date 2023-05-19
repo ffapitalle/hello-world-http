@@ -4,6 +4,7 @@ import (
 	"hello-world-http/m/v2/db"
 	"hello-world-http/m/v2/handlers"
 	"log"
+	"os"
 
 	"net/http"
 
@@ -15,11 +16,19 @@ var (
 	DbAddr     = "localhost:6379"
 )
 
+func get_env(key string, def ...string) string {
+	val, ok := os.LookupEnv(key)
+	if !ok {
+		val = def[0]
+	}
+	return val
+}
+
 func main() {
 
 	var err error
 
-	db.DbClient, err = db.NewDatabase(DbAddr)
+	db.DbClient, err = db.NewDatabase(get_env("REDISURL", DbAddr))
 	if err != nil {
 		log.Printf("WARN: Failed to connect to redis: %s", err.Error())
 	}
