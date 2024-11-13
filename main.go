@@ -44,6 +44,7 @@ func main() {
 
 	router.GET("/hello/:name", handlers.Hello)
 	router.GET("/hostname", handlers.Hostname)
+	router.PUT("/mask/:pattern", handlers.Mask)
 
 	router.Run(ListenAddr)
 }

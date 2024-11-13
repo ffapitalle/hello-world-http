@@ -1,10 +1,14 @@
 module hello-world-http/m/v2
 
-go 1.20
+go 1.21.3
+
+toolchain go1.22.0
 
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/tamathecxder/randomail v1.2.0
+	github.com/tjarratt/babble v0.0.0-20210505082055-cbca2a4833c1
 )
 
 require (
