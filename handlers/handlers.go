@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	zlog "github.com/rs/zerolog/log"
 	"github.com/tamathecxder/randomail"
 	"github.com/tjarratt/babble"
 )
@@ -53,6 +54,7 @@ func Mask(c *gin.Context) {
 	switch pattern {
 	case "email":
 		log.Printf("INFO: log sample %s: %s", pattern, randomail.GenerateRandomEmail())
+		zlog.Info().Msgf("log sample %s: %s", pattern, randomail.GenerateRandomEmail())
 	default:
 		log.Printf("INFO: %s", babbler.Babble())
 	}
