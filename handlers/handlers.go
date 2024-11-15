@@ -55,6 +55,10 @@ func Mask(c *gin.Context) {
 	case "email":
 		log.Printf("INFO: log sample %s: %s", pattern, randomail.GenerateRandomEmail())
 		zlog.Info().Msgf("log sample %s: %s", pattern, randomail.GenerateRandomEmail())
+	case "custom":
+		s := c.Query("value")
+		log.Printf("INFO: log sample %s: %s", pattern, s)
+		zlog.Info().Msgf("log sample %s: %s", pattern, s)
 	default:
 		log.Printf("INFO: %s", babbler.Babble())
 	}
