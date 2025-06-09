@@ -16,7 +16,7 @@ var (
 	DbAddr     = "localhost:6379"
 )
 
-func get_env(key string, def ...string) string {
+func getEnv(key string, def ...string) string {
 	val, ok := os.LookupEnv(key)
 	if !ok {
 		val = def[0]
@@ -28,7 +28,7 @@ func main() {
 
 	var err error
 
-	db.DbClient, err = db.NewDatabase(get_env("REDISURL", DbAddr))
+	db.DbClient, err = db.NewDatabase(getEnv("REDISURL", DbAddr))
 	if err != nil {
 		log.Printf("WARN: Failed to connect to redis: %s", err.Error())
 	}
@@ -45,5 +45,9 @@ func main() {
 	router.GET("/hello/:name", handlers.Hello)
 	router.GET("/hostname", handlers.Hostname)
 
-	router.Run(ListenAddr)
+	err = router.Run(ListenAddr)
+	if err != nil {
+		log.Printf("ERR: Failed to run server: %s", err.Error())
+		return
+	}
 }
